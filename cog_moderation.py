@@ -27,7 +27,7 @@ class Configuration(commands.Cog):
         return
 
     def initialize_guild_config(self, guild): # called when a new config entry is needed for a new guild
-        if str(guild.id) not in [*self.guild_configs.keys()]:
+        if str(guild.id) not in [*self.guild_configs.keys()]: # if the guild id isnt in the config cache, add it.
             self.guild_configs[guild.id] = {
                 'bot_channel': -1,
                 'resource_channel': []
@@ -36,12 +36,12 @@ class Configuration(commands.Cog):
 
     async def bot_log(self, context, message):
         bot_channel = context.guild.get_channel(int(self.guild_configs[str(context.guild.id)]['bot_channel']))
-        if bot_channel != -1:
-            if isinstance(message, str):
+        if bot_channel != -1: # aka if the guild DOES have a channel set as the bot channel
+            if isinstance(message, str): # if its a message, just pass the message
                 await bot_channel.send(message)
-            elif isinstance(message, discord.Embed):
+            elif isinstance(message, discord.Embed): # if its an embed, then send that
                 await bot_channel.send(embed=message)
-        await context.message.delete()
+        await context.message.delete() # delete the original message to keep things clean
         return
 
     @commands.group(
@@ -50,9 +50,11 @@ class Configuration(commands.Cog):
         help='Bot configuration tools.',
         invoke_without_command=True
     )
-    @commands.has_guild_permissions(manage_guild=True)
+    @commands.has_guild_permissions(manage_guild=True) # only guild managers should be able to change the config
     async def config(self, command_context):
-        help_embed = discord.Embed(
+        
+        # create an embed to show the usage.
+        help_embed = discord.Embed( 
             title='[+c | +config] : Configuration Commands',
             description='List the commands available within the configuration cog.',
             color=discord.colour.Color.blue()
@@ -74,7 +76,7 @@ class Configuration(commands.Cog):
         help='Set a configuration setting for this guild.'
     )
     async def set(self, command_context, *args):
-
+        
         # If no parameters are provided, show what parameters are available to set
         if len(args) == 0:
             help_embed = discord.Embed(
@@ -93,10 +95,10 @@ class Configuration(commands.Cog):
             await self.bot_log(command_context, help_embed)
             return
 
-        # Check to see if the configuration is allowable.
+        # Check to see if the configuration is a valid setting.
         if args[0] not in [*self.guild_configs[str(command_context.guild.id)].keys()]:
             await self.bot_log(command_context, f"Statement: ```{args[0]}``` is not a valid configuration parameter.")
-        elif args[0] == 'bot_channel':
+        elif args[0] == 'bot_channel': # Set the bot channel, overwriting the previous, or un-setting the current one.
             if self.guild_configs[str(command_context.guild.id)][args[0]] == command_context.channel.id:
                 self.guild_configs[str(command_context.guild.id)][args[0]] = -1
                 await self.bot_log(command_context, f'{command_context.channel.name} rescinded as the bot channel.')
@@ -104,7 +106,7 @@ class Configuration(commands.Cog):
                 self.guild_configs[str(command_context.guild.id)][args[0]] = command_context.channel.id
                 await self.bot_log(command_context, f'{command_context.channel.name} set as the bot channel.')
 
-        elif args[0] == 'resource_channel':
+        elif args[0] == 'resource_channel': # add or remove a channel to the resource channels which can use +r commands
             if command_context.channel.id in self.guild_configs[str(command_context.guild.id)][args[0]]:
                 del self.guild_configs[str(command_context.guild.id)][args[0]][command_context.channel.id]
                 await self.bot_log(command_context, f'{command_context.channel.name} removed from resource_channels')
@@ -138,8 +140,8 @@ class Configuration(commands.Cog):
                         name=key,
                         value= command_context.guild.get_channel(self.guild_configs[str(command_context.guild.id)][key]).name
                     )
-
             await self.bot_log(command_context, help_embed)
+            
         else:
             if args[0] not in [*self.guild_configs[str(command_context.guild.id)].keys()]:
                 await self.bot_log(command_context, f"Statement: ```{args[0]}``` is an invalid configuration parameter.")
@@ -156,7 +158,7 @@ class Configuration(commands.Cog):
                     description=description,
                     color=discord.colour.Color.blue()
                 ))
-
+                
         return
 
 # channels: resource, bot, welcome,
