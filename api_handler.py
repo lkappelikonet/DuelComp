@@ -2,6 +2,7 @@ import requests
 import pokebase as pb
 from datetime import datetime
 
+#TODO this is, at the moment, just a collection of experiments.
 
 def create_request(url, params=[], headers=[]):
     try:
