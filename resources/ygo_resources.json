@@ -55,7 +55,7 @@
       "alias": "fetc",
       "title": "Fast Effect Timing Chart",
       "content": "resources\\images\\fast_effect_timing_chart.png",
-      "help": "Chart which shows the flow of the gamestate."
+      "help": "Chart which shows the flow of the game state."
     }
   },
 
