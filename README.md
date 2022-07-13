@@ -1,9 +1,15 @@
 # DuelComp
 This is a discord bot designed for the purpose of aiding in content regarding Yu-Gi-Oh!
 
+
+To properly run, need to add ".env" containing a bot token to the root directory.
+
+
 For an invite link, please message Bard#3883 on Discord.
 
+
 Currently its primary purpose is to serve as a tool to quickly reference write-ups and resource about various topics.
+
 
 Links:
 TCG Organized Play
@@ -15,8 +21,10 @@ TCG Forbidden/Limited List
 Battle Phase Table / Damage Step Table
 Pazim's Resource Folder (ATK/DEF Modifiers, Card Information Retention, Psi-Blocker / Prohibition)
 
+
 Images:
 Fast Effect Timing Chart (Bard's Version)
+
 
 Writeups:
 Sources of Credibility
